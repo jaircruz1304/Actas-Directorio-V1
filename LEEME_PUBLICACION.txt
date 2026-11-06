@@ -1,0 +1,31 @@
+FIAS DIRECTORIO INTELLIGENCE v1.0 — INDEXACIÓN AUTOMÁTICA SIN PEGAR ENLACES
+
+1) PUBLICACIÓN EN GITHUB PAGES
+- Reemplaza index.html, config.js, assets/app.js y assets/app.css en la RAÍZ de Actas-Directorio.
+- Espera la publicación y abre la página con Ctrl+F5.
+- Inicia sesión Microsoft 365; el índice se descarga automáticamente desde SharePoint.
+- Al pulsar Sincronizar se consulta de nuevo la matriz, se verifica el índice y se comparan los PDF del repositorio.
+
+2) CONFIGURACIÓN (YA LISTA)
+- El localizador del índice se define UNA SOLA VEZ en config.js, no por usuario.
+- Config.js es PÚBLICO en GitHub Pages. No pongas contraseñas, tokens o client secrets.
+- Los secretos de GitHub Actions que se inyectan en JavaScript se EXHIBEN al navegador una vez publicada la web. No sirven para mantener secretos de un frontend estático.
+- Si deseas no exponer el enlace compartido, utiliza un identificador Graph driveId/itemId del archivo con permisos restringidos y adapta la consulta, o implementa un backend autorizado.
+
+3) SEGURIDAD IMPRESCINDIBLE
+- Abre SharePoint > archivo de índice > Administrar acceso > comprueba que NO está marcado «Cualquiera con el vínculo».
+- Usa «Personas con acceso existente» o usuarios/grupo corporativo autorizados. Si el enlace actual concede acceso anónimo, revócalo y genera un vínculo restringido ANTES de publicar esta versión.
+- El enlace identifica un archivo: la autorización efectiva debe aplicarla SharePoint mediante Microsoft Graph y los permisos del usuario.
+- Mantén el índice JSON, PDFs y hojas Excel en SharePoint protegido; no publiques sus contenidos ni claves en GitHub.
+
+4) ACTUALIZACIÓN AUTOMÁTICA
+- Al entrar o pulsar Sincronizar con sesión M365, lee el JSON desde Graph, consulta la matriz y revisa actas nuevas. No hay servicio en segundo plano.
+- Si encuentra PDF nuevos, ejecuta OCR en el navegador (puede tardar y requiere red) y los añade a índice local.
+- Intenta publicar automáticamente el JSON central cuando el usuario ya tenga permiso de edición y consentimiento Files.ReadWrite.
+- Si Microsoft exige consentimiento interactivo o existe conflicto de versiones ETag, NO sobrescribe: deja los cambios en caché y ofrece el botón «Publicar novedades» para resolverlos. Hay que verificar los permisos por cuenta.
+- El navegador solo procesa mientras la web está abierta. No hay vigilancia ni procesamiento sin sesiones activas.
+
+5) NOTAS TÉCNICAS
+- Microsoft Entra ID requiere redirectUri SPA del dominio GitHub Pages e inscripción de permisos Graph.
+- Sin acceso corporativo aquí no es posible probar Graph real ni consentimiento. Se probaron sintaxis y estructura local.
+- La búsqueda es léxica/extractiva + embeddings opcionales en navegador; no equivale a IA generativa.

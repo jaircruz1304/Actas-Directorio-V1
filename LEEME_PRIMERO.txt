@@ -1,0 +1,16 @@
+FIAS DIRECTORIO - CORRECCION DE PANTALLA EN BLANCO
+
+CAUSA: index.html es la entrada de un proyecto Vite + React, no una pagina HTML independiente. Si se abre directamente desde el explorador de archivos, /src/main.tsx no se compila y la pagina queda vacia. El ZIP original no incluye los archivos compilados.
+
+PRUEBA VISUAL INMEDIATA:
+1. Abra VISTA_PREVIA.html con el navegador. Muestra la interfaz sin depender de npm.
+2. Importe su matriz XLSX mediante el boton Importar matriz Excel (el procesamiento requiere acceso a la biblioteca XLSX desde CDN).
+3. Para probar Microsoft 365, ejecute INICIAR_WINDOWS.bat y use http://localhost:8080/VISTA_PREVIA.html. Debe registrar exactamente esa URI SPA en Entra ID; ademas el tenant debe permitir los permisos Graph.
+
+PROYECTO REACT:
+1. Instale Node.js y ejecute 'npm install' dentro de esta carpeta.
+2. Ejecute 'npm run dev' y abra http://localhost:5173/.
+3. Para produccion: 'npm run build' y despliegue el contenido de dist/ en hosting web adecuado.
+4. No abra index.html mediante doble clic. La pantalla vacia es el comportamiento esperable del fuente sin compilar.
+
+VISTA_PREVIA.html es una capa independiente de recuperacion y prueba; la base principal React se conserva intacta. No se garantiza conexion Graph hasta probar permisos, redireccion SPA y acceso documental en el tenant real. No incluye datos institucionales.
