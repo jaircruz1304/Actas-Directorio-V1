@@ -1,9 +1,32 @@
-# Arquitectura v1.0 — Sin backend de IA ni vigilancia permanente
+# FIAS Directorio · Experiencia Enterprise v1.1
 
-GitHub Pages (HTML/CSS/JS estáticos) -> MSAL M365 (login) -> Microsoft Graph -> matriz Excel / carpeta actas / índice JSON protegido en SharePoint.
+## Flujo automático
 
-Al sincronizar se recupera la versión actual del índice y matriz; el navegador comprueba el repositorio y ejecuta extracción de PDF/OCR para actas nuevas, incrementa el índice y lo publica si está autorizado. El índice no se aloja en GitHub.
+1. Microsoft 365 identifica al usuario institucional con MSAL.
+2. Microsoft Graph recupera el índice JSON privado alojado en SharePoint.
+3. La matriz Excel se descarga de SharePoint y su información se normaliza.
+4. Se recorre el repositorio documental para comprobar actas PDF nuevas.
+5. Si hay novedades, el navegador procesa texto/OCR, actualiza el índice local y
+   *intenta* publicarlo con control ETag en SharePoint (si hay autorización de edición).
+6. El usuario puede consultar el explorador, la inteligencia documental y
+   la trazabilidad de antecedentes, siempre con referencias cuando están disponibles.
 
-**Límite de seguridad:** `config.js` ES público. Un GitHub Actions Secret que se incruste en un archivo JavaScript público no conservará el secreto. Este ZIP incluye un *localizador* SharePoint en config.js, no una contraseña. El usuario administrador debe restringir el enlace a usuarios con acceso autorizado y renovar el vínculo si actualmente está configurado para cualquiera con enlace.
+No se utiliza Azure OpenAI, Azure AI Search, procesos Windows de vigilancia ni
+copias de los documentos privados en GitHub Pages.
 
-**Límite operativo:** no hay ejecución en segundo plano; la detección solo ocurre cuando usuarios ingresan o sincronizan. Para análisis generativo real sería necesario un modelo local o API privada. Las respuestas extractivas no deben presentarse como juicios de IA.
+## UX
+
+- Navegación principal: Panorama, Explorador, Inteligencia, Trazabilidad.
+- Los controles técnicos manuales se retiraron; los mensajes de estado se concentran
+  en un diálogo de sincronización con etapas, indicadores y errores visibles.
+- La opción discreta «Actualizar datos» se mantiene como recuperación.
+- «Trazabilidad» presenta registros relacionados por tema en orden cronológico;
+  no prueba que entre ellos exista una dependencia jurídica formal.
+
+## Seguridad y límites
+
+- `config.js` es público; su enlace debe ser un identificador, no un token de acceso.
+- Los permisos de SharePoint aplican a cada usuario; revise el uso de enlaces públicos.
+- Si Files.ReadWrite no está consentido, la publicación automática puede quedar pendiente.
+- La semántica neuronal del navegador es opcional según compatibilidad/red, con
+  búsqueda contextual como alternativa; no hay generación de lenguaje avanzada.
